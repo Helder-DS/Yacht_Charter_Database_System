@@ -1,0 +1,159 @@
+Jupiter Code
+
+/*Questions 1*/
+
+# Connection string for SQL Server
+conn_str = 'Driver={SQL Server};Server=DM-7Y6DWY3\\SQLEXPRESS;Database=Yachts;Trusted_Connection=yes;UID=DAWNMEATS\\helder.daSilva'
+
+# Create a cursor for executing SQL queries
+conn = pyodbc.connect(conn_str)
+
+#Inserting data into the customer and charter table 
+insertQuery = '''
+EXEC Insert_into_Customer @cust_id = 'd108',  @cust_name = 'Steve James',  @cust_nationality = 'Irish', @cust_email = 'Steve.James@ulster.ac.uk',
+@cust_phone_no = '07854785236', @chart_id = '668A', @chart_start_date = '2018-09-26', @duration = '20';
+'''
+
+# Execute the insert query
+result_insert = cursor.execute(insertQuery)
+
+# Commit the changes to the database
+conn.commit()
+
+# Select and print contents of 'Customer' table
+selectQuery = "SELECT * FROM Customer"
+result = cursor.execute(selectQuery)
+
+for row in result:
+    print(f'{row}')
+
+
+# Select and print contents of 'charter' table   
+selectQueryCharter = "SELECT * FROM charter"
+result = cursor.execute(selectQueryCharter)
+
+for row in result:
+    print(f'{row}')
+
+#Close connection
+conn.close()
+
+
+
+/* Question 2 */
+# Connection string for Windows Authentication
+conn_str = 'Driver={SQL Server};Server=DM-7Y6DWY3\\SQLEXPRESS;Database=Yachts;Trusted_Connection=yes;UID=DAWNMEATS\\helder.daSilva'
+
+# Connect to SQL Server
+conn = pyodbc.connect(conn_str)
+
+# Create a cursor
+cursor = conn.cursor() 
+
+selectQuery = '''SELECT Charter.yacht_name, Visit.date_of_arrival, Visit.port_name, SUM(Visit.length_of_stay) AS total_length_of_stay
+FROM Charter
+JOIN Visit ON Charter.chart_id = Visit.chart_id
+WHERE Visit.date_of_arrival >= '2018-06-17' AND Visit.date_of_arrival <= '2018-09-23'
+GROUP BY Visit.port_name, Charter.yacht_name, Visit.date_of_arrival;
+'''
+
+result = cursor.execute(selectQuery)
+
+for row in result:
+    print(f'{row}')
+    
+#
+conn.close()  
+
+/*Question 3*/
+
+# Connection string for Windows Authentication
+conn_str = 'Driver={SQL Server};Server=DM-7Y6DWY3\\SQLEXPRESS;Database=Yachts;Trusted_Connection=yes;UID=DAWNMEATS\\helder.daSilva'
+
+# Connect to SQL Server
+conn = pyodbc.connect(conn_str)
+
+# Create a cursor
+cursor = conn.cursor() 
+
+selectQuery = '''SELECT Yacht.yacht_name, Visit.date_of_arrival, Visit.length_of_stay
+FROM Yacht
+JOIN Port ON Yacht.yacht_home_port = Port.port_name
+JOIN Visit ON port.port_name = Visit.port_name
+WHERE Visit.port_name = Yacht.yacht_home_port AND Visit.date_of_arrival >= '2018-06-17' AND Visit.date_of_arrival <= '2018-09-23' AND NOT length_of_stay = '0'
+GROUP BY Yacht.yacht_name, yacht_home_port, Visit.date_of_arrival, Visit.length_of_stay
+'''
+
+result = cursor.execute(selectQuery)
+
+for row in result:
+    print(f'{row}')
+    
+conn.close()  
+
+/* Question 4 */
+
+# Connection string for Windows Authentication
+conn_str = 'Driver={SQL Server};Server=DM-7Y6DWY3\\SQLEXPRESS;Database=Yachts;Trusted_Connection=yes;UID=DAWNMEATS\\helder.daSilva'
+
+# Connect to SQL Server
+conn = pyodbc.connect(conn_str)
+
+# Create a cursor
+cursor = conn.cursor() 
+
+selectQuery = '''SELECT date_of_arrival, port_name, cust_name, length_of_stay
+FROM Customer
+JOIN Charter ON Customer.cust_id = charter.cust_id
+JOIN Visit ON Charter.chart_id = Visit.chart_id
+WHERE Customer.cust_name = 'Cary Grant'
+ORDER BY date_of_arrival'''
+
+result = cursor.execute(selectQuery)
+
+for row in result:
+    print(f'{row}')
+    
+conn.close()  
+
+
+/* Question 5*/
+
+# Connection string for Windows Authentication
+conn_str = 'Driver={SQL Server};Server=DM-7Y6DWY3\\SQLEXPRESS;Database=Yachts;Trusted_Connection=yes;UID=DAWNMEATS\\helder.daSilva'
+
+# Connect to SQL Server
+conn = pyodbc.connect(conn_str)
+
+# Create a cursor
+cursor = conn.cursor() 
+
+insertQuery = '''
+INSERT INTO Yacht
+VALUES ('XD', 'XD', 'XD','Genoa', 123, 123)
+'''
+result_insert = cursor.execute(insertQuery)
+
+conn.commit()
+
+deleteQuery = '''
+DELETE FROM Yacht 
+WHERE Yacht_name = 'XD'
+'''
+
+result_delete = cursor.execute(deleteQuery)
+
+conn.commit()
+
+
+selectQuery = '''SELECT yacht_name AS Yachts_not_available 
+FROM out_of_service
+'''
+
+result = cursor.execute(selectQuery)
+
+for row in result:
+    print(f'{row}')
+
+
+conn.close()  
