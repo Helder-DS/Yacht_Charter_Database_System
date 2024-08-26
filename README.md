@@ -1,5 +1,10 @@
 # SQL Database Project: Holiday Charter Management System
 
+### Entity Relationship Modelling 
+
+![image](https://github.com/user-attachments/assets/75694979-7648-4630-84d2-081a91f23835)
+
+
 ## 1. Database Design and Justifications
 
 ### 1.1 Justification of Cardinality Ratios
