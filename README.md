@@ -1,5 +1,7 @@
 # SQL Database Project: Holiday Charter Management System
 
+This project involves the design and implementation of a SQL database to manage holiday charter operations. The system tracks customers, yachts, ports, and charter bookings, ensuring accurate and efficient data management. The database is built with robust Entity Relationship Modelling (ERD) to reflect real-world business scenarios, including complex relationships such as many-to-many and one-to-many cardinalities. Key features include the use of primary and foreign key constraints, data normalization up to the Third Normal Form (3NF), and the incorporation of stored procedures and triggers to automate and streamline business processes.
+
 ## Table of Contents
 - [Entity Relationship Modelling](#entity-relationship-modelling)
 - [Database Design and Justifications](#database-design-and-justifications)
